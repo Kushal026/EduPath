@@ -6,20 +6,26 @@ import { CareerPaths } from './components/CareerPaths';
 import { CollegeDirectory } from './components/CollegeDirectory';
 import { TimelineTracker } from './components/TimelineTracker';
 import { Dashboard } from './components/Dashboard';
+import { AuthModal } from './components/AuthModal';
 
 function App() {
   const [currentSection, setCurrentSection] = useState('home');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user] = useState({
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [selectedClassLevel, setSelectedClassLevel] = useState<'10th' | '12th' | null>(null);
+  const [selectedStream, setSelectedStream] = useState<string | null>(null);
+  const [user, setUser] = useState({
     name: 'Priya Sharma',
     class: '12',
     stream: 'Science',
     location: 'Mumbai, Maharashtra'
   });
 
-  const handleLogin = () => {
+  const handleLogin = (userData: any) => {
     setIsLoggedIn(true);
+    setUser(userData);
     setCurrentSection('dashboard');
+    setShowAuthModal(false);
   };
 
   const handleGetStarted = () => {
@@ -30,42 +36,72 @@ function App() {
     }
   };
 
+  const handleClassSelection = (classLevel: '10th' | '12th', stream?: string) => {
+    setSelectedClassLevel(classLevel);
+    if (stream) {
+      setSelectedStream(stream);
+    }
+    // For 12th class students, go directly to career paths after stream selection
+    if (classLevel === '12th' && stream) {
+      setCurrentSection('careers');
+    } else {
+      setCurrentSection('quiz');
+    }
+  };
+
+  // Listen for navigation events from quiz results
+  React.useEffect(() => {
+    const handleNavigateToColleges = (event: any) => {
+      setCurrentSection('colleges');
+    };
+
+    window.addEventListener('navigateToColleges', handleNavigateToColleges);
+    return () => window.removeEventListener('navigateToColleges', handleNavigateToColleges);
+  }, []);
+
   const renderSection = () => {
     switch (currentSection) {
       case 'home':
-        return <Hero onGetStarted={handleGetStarted} />;
+        return <Hero onGetStarted={handleGetStarted} onClassSelection={handleClassSelection} onSectionChange={setCurrentSection} />;
       case 'dashboard':
         return isLoggedIn ? <Dashboard user={user} /> : <Hero onGetStarted={handleGetStarted} />;
       case 'quiz':
-        return <AptitudeQuiz />;
+        return <AptitudeQuiz selectedClassLevel={selectedClassLevel} selectedStream={selectedStream} />;
       case 'careers':
-        return <CareerPaths />;
+        return <CareerPaths selectedClassLevel={selectedClassLevel} selectedStream={selectedStream} />;
       case 'colleges':
-        return <CollegeDirectory />;
+        return <CollegeDirectory 
+          selectedClassLevel={selectedClassLevel} 
+          selectedStream={selectedStream}
+        />;
       case 'timeline':
         return <TimelineTracker />;
       default:
-        return <Hero onGetStarted={handleGetStarted} />;
+        return <Hero onGetStarted={handleGetStarted} onClassSelection={handleClassSelection} onSectionChange={setCurrentSection} />;
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header
-        currentSection={currentSection}
-        onSectionChange={setCurrentSection}
         isLoggedIn={isLoggedIn}
-        onLogin={handleLogin}
+        onLogin={() => setShowAuthModal(true)}
         user={user}
       />
       {renderSection()}
+      
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onLogin={handleLogin}
+      />
       
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">CareerCompass</h3>
+              <h3 className="text-xl font-bold mb-4">EduPath</h3>
               <p className="text-gray-300">
                 Your trusted guide to making informed career and education decisions.
               </p>
@@ -91,14 +127,14 @@ function App() {
             <div>
               <h4 className="font-semibold mb-4">Connect</h4>
               <ul className="space-y-2 text-gray-300">
-                <li>Email: info@careercompass.edu</li>
+                <li>Email: info@edupath.edu</li>
                 <li>Phone: +91-11-1234-5678</li>
                 <li>WhatsApp: +91-98765-43210</li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 CareerCompass. All rights reserved.</p>
+            <p>&copy; 2024 EduPath. All rights reserved.</p>
           </div>
         </div>
       </footer>
