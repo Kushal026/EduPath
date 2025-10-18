@@ -11,7 +11,6 @@ export const Hero: React.FC<HeroProps> = ({ onGetStarted, onClassSelection, onSe
   const [showWelcome, setShowWelcome] = useState(true);
   const [showStreamSelection, setShowStreamSelection] = useState(false);
   const [selectedClass, setSelectedClass] = useState<'10th' | '12th' | null>(null);
-  const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
   const handleClassSelection = (classLevel: '10th' | '12th') => {
     if (classLevel === '12th') {
@@ -68,6 +67,51 @@ export const Hero: React.FC<HeroProps> = ({ onGetStarted, onClassSelection, onSe
     }
   ];
 
+  const additionalFeatures = [
+    {
+      title: 'AI-Powered Recommendations',
+      description: 'Get personalized suggestions based on your profile and interests',
+      icon: Zap,
+      color: 'yellow',
+      image: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=400'
+    },
+    {
+      title: 'Expert Counseling',
+      description: 'Connect with certified career counselors for personalized guidance',
+      icon: Users,
+      color: 'indigo',
+      image: 'https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=400'
+    },
+    {
+      title: 'Success Stories',
+      description: 'Learn from students who achieved their dreams and get inspired',
+      icon: Star,
+      color: 'pink',
+      image: 'https://images.pexels.com/photos/1205651/pexels-photo-1205651.jpeg?auto=compress&cs=tinysrgb&w=400'
+    },
+    {
+      title: 'Global Opportunities',
+      description: 'Explore international education and study abroad programs',
+      icon: Globe,
+      color: 'teal',
+      image: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=400'
+    },
+    {
+      title: 'Scholarship Finder',
+      description: 'Discover financial aid opportunities and merit-based scholarships',
+      icon: Award,
+      color: 'green',
+      image: 'https://images.pexels.com/photos/5940721/pexels-photo-5940721.jpeg?auto=compress&cs=tinysrgb&w=400'
+    },
+    {
+      title: 'Peer Connect',
+      description: 'Network with like-minded students and build study groups',
+      icon: Users,
+      color: 'purple',
+      image: 'https://images.pexels.com/photos/1595391/pexels-photo-1595391.jpeg?auto=compress&cs=tinysrgb&w=400'
+    }
+  ];
+
   const uniqueFeatures = [
     {
       title: 'AI-Powered Recommendations',
@@ -94,13 +138,6 @@ export const Hero: React.FC<HeroProps> = ({ onGetStarted, onClassSelection, onSe
       color: 'teal'
     }
   ];
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentFeatureIndex((prev) => (prev + 1) % features.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
 
   if (showWelcome) {
     return (
@@ -155,11 +192,11 @@ export const Hero: React.FC<HeroProps> = ({ onGetStarted, onClassSelection, onSe
             {/* Animated Feature Showcase */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 mb-12">
               <h2 className="text-2xl font-bold text-gray-900 mb-8">Why Choose EduPath?</h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {uniqueFeatures.map((feature, index) => (
                   <div
                     key={index}
-                    className="group p-6 rounded-xl bg-gradient-to-br from-white to-gray-50 hover:shadow-lg transition-all transform hover:scale-105 border border-gray-100"
+                    className="group p-6 rounded-2xl bg-gradient-to-br from-white to-gray-50 hover:shadow-xl transition-all transform hover:scale-105 border border-gray-100 hover:border-blue-200"
                   >
                     <div className={`w-12 h-12 rounded-full bg-${feature.color}-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                       <feature.icon className={`w-6 h-6 text-${feature.color}-600`} />
@@ -296,122 +333,78 @@ export const Hero: React.FC<HeroProps> = ({ onGetStarted, onClassSelection, onSe
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Explore Our Features</h2>
           
-          {/* Sliding Feature Cards */}
-          <div className="relative mb-16">
-            <div className="overflow-hidden rounded-2xl shadow-2xl">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentFeatureIndex * 100}%)` }}
+          {/* Main Features Grid */}
+          <div className="grid lg:grid-cols-2 gap-8 mb-16">
+            {features.map((feature) => (
+              <div
+                key={feature.id}
+                className="group bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all transform hover:scale-105 border border-gray-100"
               >
-                {features.map((feature, index) => (
-                  <div
-                    key={feature.id}
-                    className={`w-full flex-shrink-0 bg-gradient-to-r ${feature.gradient} text-white p-12 relative overflow-hidden`}
-                  >
-                    <div className="relative z-10 max-w-4xl mx-auto">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center mb-6">
-                            <feature.icon className="w-12 h-12 mr-4" />
-                            <div>
-                              <h3 className="text-3xl font-bold mb-2">{feature.title}</h3>
-                              <p className="text-lg opacity-90">{feature.description}</p>
-                            </div>
-                          </div>
-                          <div className="text-sm opacity-75 mb-6">{feature.stats}</div>
-                          <button
-                            onClick={() => onSectionChange(feature.id)}
-                            className="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg hover:bg-white/30 transition-all transform hover:scale-105"
-                          >
-                            Explore Now
-                          </button>
-                        </div>
-                        <div className="hidden lg:block">
-                          <div className="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
-                            <feature.icon className="w-16 h-16" />
-                          </div>
-                        </div>
-                      </div>
+                <div className={`h-2 bg-gradient-to-r ${feature.gradient}`}></div>
+                <div className="p-8">
+                  <div className="flex items-start space-x-6">
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                      <feature.icon className="w-8 h-8 text-white" />
                     </div>
-                    
-                    {/* Background Pattern */}
-                    <div className="absolute inset-0 opacity-10">
-                      <div className="absolute top-10 right-10 w-20 h-20 border-2 border-white rounded-full"></div>
-                      <div className="absolute bottom-10 left-10 w-16 h-16 border-2 border-white rounded-full"></div>
-                      <div className="absolute top-1/2 left-1/4 w-12 h-12 border-2 border-white rounded-full"></div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                      <p className="text-gray-600 mb-4 leading-relaxed">{feature.description}</p>
+                      <div className="text-sm text-gray-500 mb-6 font-medium">{feature.stats}</div>
+                      <button
+                        onClick={() => onSectionChange(feature.id)}
+                        className={`bg-gradient-to-r ${feature.gradient} text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all transform hover:scale-105 font-medium`}
+                      >
+                        Explore Now
+                      </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Feature Navigation Dots */}
-            <div className="flex justify-center mt-6 space-x-2">
-              {features.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentFeatureIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentFeatureIndex ? 'bg-blue-600 w-8' : 'bg-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Access Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature) => (
-              <button
-                key={feature.id}
-                onClick={() => onSectionChange(feature.id)}
-                className="group bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all transform hover:scale-105 border border-gray-100"
-              >
-                <div className={`w-12 h-12 rounded-full bg-${feature.color}-100 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                  <feature.icon className={`w-6 h-6 text-${feature.color}-600`} />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm mb-3">{feature.description}</p>
-                <div className="text-xs text-gray-500">{feature.stats}</div>
-              </button>
+              </div>
             ))}
           </div>
 
           {/* Additional Features */}
-          <div className="mt-16 bg-white rounded-2xl shadow-xl p-8">
+          <div className="mb-16">
             <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">Additional Features</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="text-center p-4">
-                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Award className="w-6 h-6 text-yellow-600" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {additionalFeatures.map((feature, index) => (
+                <div
+                  key={index}
+                  className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:scale-105"
+                >
+                  <div className="h-48 overflow-hidden">
+                    <img 
+                      src={feature.image} 
+                      alt={feature.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className={`w-12 h-12 rounded-full bg-${feature.color}-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                      <feature.icon className={`w-6 h-6 text-${feature.color}-600`} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h4>
+                    <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                  </div>
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Scholarship Finder</h4>
-                <p className="text-gray-600 text-sm">Find scholarships and financial aid</p>
-              </div>
-              
-              <div className="text-center p-4">
-                <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Users className="w-6 h-6 text-indigo-600" />
-                </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Peer Connect</h4>
-                <p className="text-gray-600 text-sm">Connect with like-minded students</p>
-              </div>
-              
-              <div className="text-center p-4">
-                <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Star className="w-6 h-6 text-pink-600" />
-                </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Success Stories</h4>
-                <p className="text-gray-600 text-sm">Learn from successful alumni</p>
-              </div>
-              
-              <div className="text-center p-4">
-                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Globe className="w-6 h-6 text-teal-600" />
-                </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Study Abroad</h4>
-                <p className="text-gray-600 text-sm">Explore international opportunities</p>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-2xl p-8 text-center text-white">
+            <h3 className="text-3xl font-bold mb-4">Ready to Start Your Journey?</h3>
+            <p className="text-xl mb-8 opacity-90">Join thousands of students who found their perfect career path with EduPath</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => setShowWelcome(false)}
+                className="bg-white text-blue-600 px-8 py-4 rounded-xl hover:bg-gray-100 transition-all transform hover:scale-105 font-bold text-lg shadow-lg"
+              >
+                Get Started Now
+              </button>
+              <button className="border-2 border-white text-white px-8 py-4 rounded-xl hover:bg-white hover:text-blue-600 transition-all transform hover:scale-105 font-bold text-lg">
+                Watch Demo
+              </button>
             </div>
           </div>
         </div>

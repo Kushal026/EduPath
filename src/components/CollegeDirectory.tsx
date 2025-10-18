@@ -16,6 +16,7 @@ interface College {
   type: 'Government' | 'Aided';
   forClass: '10th' | '12th' | 'both';
   stream?: 'Science' | 'Commerce' | 'Arts' | 'All';
+  category?: 'Engineering' | 'Medical' | 'Pure Science' | 'Agriculture' | 'Pharmacy' | 'Business' | 'Economics' | 'Banking' | 'Accounting' | 'Law' | 'Mass Communication' | 'Social Work' | 'Psychology' | 'PU College' | 'Vocational';
   established: string;
   accreditation: string;
   placement: string;
@@ -40,6 +41,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "10th",
     stream: "All",
+    category: "PU College",
     established: "1985",
     accreditation: "CBSE Affiliated",
     placement: "95% students get admission in top colleges",
@@ -61,6 +63,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "10th",
     stream: "All",
+    category: "PU College",
     established: "1978",
     accreditation: "CBSE Affiliated",
     placement: "90% students pursue higher education",
@@ -82,6 +85,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "10th",
     stream: "All",
+    category: "PU College",
     established: "1982",
     accreditation: "State Board Affiliated",
     placement: "85% students continue to graduation",
@@ -103,6 +107,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "10th",
     stream: "All",
+    category: "Vocational",
     established: "1975",
     accreditation: "AICTE Approved",
     placement: "80% placement rate",
@@ -124,6 +129,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "10th",
     stream: "All",
+    category: "Vocational",
     established: "1990",
     accreditation: "NSDC Certified",
     placement: "75% job placement",
@@ -147,6 +153,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Science",
+    category: "Engineering",
     established: "1960",
     accreditation: "NAAC A+ Grade",
     placement: "95% placement with avg package ₹8 LPA",
@@ -168,6 +175,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Science",
+    category: "Medical",
     established: "1954",
     accreditation: "MCI Approved",
     placement: "100% placement in hospitals",
@@ -189,6 +197,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Science",
+    category: "Pure Science",
     established: "1965",
     accreditation: "UGC Recognized",
     placement: "85% students pursue higher studies",
@@ -210,6 +219,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Science",
+    category: "Agriculture",
     established: "1970",
     accreditation: "ICAR Approved",
     placement: "90% placement in agriculture sector",
@@ -231,6 +241,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Science",
+    category: "Pharmacy",
     established: "1968",
     accreditation: "PCI Approved",
     placement: "92% placement in pharma industry",
@@ -254,6 +265,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Commerce",
+    category: "Business",
     established: "1962",
     accreditation: "UGC Recognized",
     placement: "88% placement with avg package ₹4.5 LPA",
@@ -275,6 +287,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Commerce",
+    category: "Business",
     established: "1975",
     accreditation: "AICTE Approved",
     placement: "90% placement in corporate sector",
@@ -296,6 +309,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Commerce",
+    category: "Economics",
     established: "1980",
     accreditation: "UGC Recognized",
     placement: "85% students pursue higher studies or jobs",
@@ -317,6 +331,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Commerce",
+    category: "Banking",
     established: "1985",
     accreditation: "RBI Recognized",
     placement: "93% placement in banking sector",
@@ -338,6 +353,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Commerce",
+    category: "Accounting",
     established: "1978",
     accreditation: "ICAI Recognized",
     placement: "87% students clear CA/CS exams",
@@ -361,6 +377,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Arts",
+    category: "Liberal Arts",
     established: "1958",
     accreditation: "UGC Recognized",
     placement: "80% students pursue higher studies",
@@ -382,6 +399,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Arts",
+    category: "Law",
     established: "1924",
     accreditation: "BCI Approved",
     placement: "95% placement in legal sector",
@@ -403,6 +421,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Arts",
+    category: "Mass Communication",
     established: "1982",
     accreditation: "UGC Recognized",
     placement: "85% placement in media industry",
@@ -424,6 +443,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Arts",
+    category: "Social Work",
     established: "1975",
     accreditation: "UGC Recognized",
     placement: "90% placement in NGOs and government",
@@ -445,6 +465,7 @@ const colleges: College[] = [
     type: "Government",
     forClass: "12th",
     stream: "Arts",
+    category: "Psychology",
     established: "1988",
     accreditation: "UGC Recognized",
     placement: "88% placement in healthcare and education",
@@ -474,6 +495,7 @@ export const CollegeDirectory: React.FC<CollegeDirectoryProps> = ({
   const [streamFilter, setStreamFilter] = useState<'Science' | 'Commerce' | 'Arts' | 'All'>(
     (selectedStream as 'Science' | 'Commerce' | 'Arts') || 'All'
   );
+  const [categoryFilter, setCategoryFilter] = useState<string>('All');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'rating' | 'fees' | 'distance'>('rating');
 
@@ -485,8 +507,9 @@ export const CollegeDirectory: React.FC<CollegeDirectoryProps> = ({
     );
     const matchesClass = classFilter === 'all' || college.forClass === classFilter || college.forClass === 'both';
     const matchesStream = streamFilter === 'All' || college.stream === streamFilter || college.stream === 'All';
+    const matchesCategory = categoryFilter === 'All' || college.category === categoryFilter;
     
-    return matchesSearch && matchesCourse && matchesClass && matchesStream;
+    return matchesSearch && matchesCourse && matchesClass && matchesStream && matchesCategory;
   }).sort((a, b) => {
     switch (sortBy) {
       case 'rating':
@@ -501,6 +524,36 @@ export const CollegeDirectory: React.FC<CollegeDirectoryProps> = ({
   });
 
   const allCourses = Array.from(new Set(colleges.flatMap(college => college.courses)));
+
+  const getAvailableCategories = () => {
+    const filtered = colleges.filter(college => {
+      const matchesClass = classFilter === 'all' || college.forClass === classFilter || college.forClass === 'both';
+      const matchesStream = streamFilter === 'All' || college.stream === streamFilter || college.stream === 'All';
+      return matchesClass && matchesStream;
+    });
+    return Array.from(new Set(filtered.map(college => college.category).filter(Boolean)));
+  };
+
+  const getCategoryDisplayName = (category: string) => {
+    const categoryNames = {
+      'Engineering': '🔧 Engineering Colleges',
+      'Medical': '🏥 Medical Colleges',
+      'Pure Science': '🔬 Science Colleges',
+      'Agriculture': '🌾 Agriculture Colleges',
+      'Pharmacy': '💊 Pharmacy Colleges',
+      'Business': '💼 Business Colleges',
+      'Economics': '📊 Economics Colleges',
+      'Banking': '🏦 Banking Colleges',
+      'Accounting': '📈 Accounting Colleges',
+      'Law': '⚖️ Law Colleges',
+      'Mass Communication': '📺 Media Colleges',
+      'Social Work': '🤝 Social Work Colleges',
+      'Psychology': '🧠 Psychology Colleges',
+      'PU College': '🎓 PU Colleges',
+      'Vocational': '🛠️ Vocational Centers'
+    };
+    return categoryNames[category as keyof typeof categoryNames] || category;
+  };
 
   const getCollegeStats = () => {
     const total = filteredColleges.length;
@@ -619,6 +672,38 @@ export const CollegeDirectory: React.FC<CollegeDirectoryProps> = ({
             </div>
           )}
 
+          {/* Category Selection for 12th Class */}
+          {classFilter === '12th' && streamFilter !== 'All' && (
+            <div className="mb-4">
+              <h4 className="text-sm font-medium text-gray-700 mb-3">College Categories:</h4>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setCategoryFilter('All')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    categoryFilter === 'All'
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  All Categories
+                </button>
+                {getAvailableCategories().map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setCategoryFilter(category)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      categoryFilter === category
+                        ? 'bg-blue-600 text-white shadow-lg'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {getCategoryDisplayName(category)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* View Controls */}
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
@@ -728,6 +813,11 @@ export const CollegeDirectory: React.FC<CollegeDirectoryProps> = ({
                       {college.stream && college.stream !== 'All' && (
                         <span className="bg-purple-100 text-purple-600 px-2 py-1 rounded-full text-xs font-medium">
                           {college.stream}
+                        </span>
+                      )}
+                      {college.category && (
+                        <span className="bg-orange-100 text-orange-600 px-2 py-1 rounded-full text-xs font-medium">
+                          {college.category}
                         </span>
                       )}
                     </div>
